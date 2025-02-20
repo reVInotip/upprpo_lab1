@@ -1,4 +1,5 @@
 ﻿using Solvers;
+using Xunit;
 
 namespace UnitTests;
 
