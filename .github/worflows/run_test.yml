@@ -1,0 +1,37 @@
+name: CI - Unit Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./upprpo-lab1.csproj
+
+      - name: Build the solution
+        run: dotnet build ./upprpo-lab1.csproj --configuration Release --no-restore
+
+      - name: Run unit tests with report
+        run: dotnet test ./UnitTests/UnitTests.csproj --configuration Release --no-build --logger "trx;LogFileName=TestResults.trx"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: ./UnitTests/TestResults.trx
