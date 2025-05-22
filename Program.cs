@@ -17,6 +17,8 @@ namespace upprpo_lab1
                               $"X2: {solution[1]}");
 
             Console.ReadLine();
+
+            Console.WriteLine("Hello world!");
         }
     }
 }
