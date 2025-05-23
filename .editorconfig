@@ -1,0 +1,11 @@
+[*.cs]
+# Стиль кода
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_prefer_inferred_tuple_names = true:suggestion
+
+# Правила именования
+dotnet_naming_rule.methods_should_be_pascal_case.symbols = public_methods
+dotnet_naming_rule.methods_should_be_pascal_case.style = pascal_case
+
+# Настройки StyleCop
+stylecop.ordering.usingDirectivesPlacement = insideNamespace
