@@ -29,13 +29,13 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          dotnet test ./UnitTests/UnitTests.csproj `
-            --collect:"XPlat Code Coverage" `
-            /p:Threshold=80 `
-            /p:ThresholdType=line `
-            /p:ThresholdStat=total `
-            --settings:coverlet.runsettings `
-            --results-directory:./TestResults `
+          dotnet test ./UnitTests/UnitTests.csproj \
+            --collect:"XPlat Code Coverage" \
+            -p:Threshold=80 \
+            -p:ThresholdType=line \
+            -p:ThresholdStat=total \
+            --settings:coverlet.runsettings \
+            --results-directory:./TestResults \
             --logger:"trx;LogFileName=test_results.xml"
         
       - name: Install ReportGenerator
