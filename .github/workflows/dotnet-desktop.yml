@@ -27,11 +27,35 @@ jobs:
       - name: Build the solution
         run: dotnet build ./upprpo-lab1.csproj --configuration Release --no-restore
 
-      - name: Run unit tests with report
-        run: dotnet test ./UnitTests/UnitTests.csproj --configuration Release --no-build --logger "trx;LogFileName=TestResults.trx"
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
+      - name: Run tests with coverage
+        run: |
+          dotnet test ./UnitTests/UnitTests.csproj `
+            --collect:"XPlat Code Coverage" `
+            /p:Threshold=80 `
+            /p:ThresholdType=line `
+            /p:ThresholdStat=total `
+            --settings:coverlet.runsettings `
+            --results-directory:./TestResults `
+            --logger:"trx;LogFileName=test_results.xml"
+        
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+        
+      - name: Generate coverage report
+        run: |
+          reportgenerator `
+            -reports:"./TestResults/**/coverage.cobertura.xml" `
+            -targetdir:"./CoverageReport" `
+            -reporttypes:"Html;HtmlSummary;Badges"
+        
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
         with:
-          name: TestResults
-          path: ./UnitTests/TestResults.trx
+          name: coverage-report
+          path: ./CoverageReport
+          
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: ./TestResults
