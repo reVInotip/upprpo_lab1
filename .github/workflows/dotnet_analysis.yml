@@ -1,0 +1,27 @@
+name: .NET Code Analysis
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  analyze:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+    
+    - name: Install dependencies
+      run: dotnet restore
+    
+    - name: Run code analysis
+      run: |
+        dotnet build --no-restore --configuration Release /p:TreatWarningsAsErrors=true
+        dotnet format --verify-no-changes --severity warn
+        dotnet list package --outdated
